@@ -1,5 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
+
 #include "monty.h"
 
 /**
@@ -11,7 +10,7 @@
  */
 void open_file(char *file_name)
 {
-	FILE *fd = fopen(file_name, "read");
+	FILE *fd = fopen(file_name, "r");
 
 	if (file_name == NULL || fd == NULL)
 	{
@@ -29,16 +28,16 @@ void open_file(char *file_name)
 
 void read_file(FILE *fd)
 {
-	int line = 0;
+	int line_num = 0;
 	int format = 0;
 	char *buffer = NULL;
 	size_t len_fd = 0;
 
-	line = 1;
-	while (getline(&buffer, &len_fd, fd) != -1)
+	line_num = 1;
+	while (getline(&buffer, &len_fd, fd) != -1)
 	{
-		format = parse_line(buffer, line, format);
-		line++;
+		format = parse_line(buffer, line_num, format);
+		line_num++;
 	}
 	free(buffer);
 }
@@ -56,7 +55,8 @@ void read_file(FILE *fd)
 
 int parse_line(char *buffer, int line_number, int format)
 {
-	char *opcode, *value;
+	char *opcode;
+	char*value;
 	const char *delim = "\n ";
 
 	if (buffer == NULL)
@@ -91,7 +91,7 @@ int parse_line(char *buffer, int line_number, int format)
 void find_func(char *opcode, char *value, int ln, int format)
 {
 	int x;
-	int flag_cd;
+	int flag;
 
 	instruction_t func_list[] = {
 		{"push", add_to_stack},
@@ -114,12 +114,12 @@ void find_func(char *opcode, char *value, int ln, int format)
 	if (opcode[0] == '#')
 		return;
 
-	for (flag _cd = 1, x = 0; func_list[x].opcode != NULL; x++)
+	for (flag = 1, x = 0; func_list[x].opcode != NULL; x++)
 	{
 		if (strcmp(opcode, func_list[x].opcode) == 0)
 		{
 			call_fun(func_list[x].f, opcode, value, ln, format);
-			flag_cd = 0;
+			flag = 0;
 		}
 	}
 	if (flag == 1)
@@ -138,16 +138,16 @@ void find_func(char *opcode, char *value, int ln, int format)
 void call_fun(op_func func, char *op, char *val, int ln, int format)
 {
 	stack_t *node;
-	int flag_cd;
+	int flag;
 	int x;
 
-	flag_cd = 1;
+	flag = 1;
 	if (strcmp(op, "push") == 0)
 	{
 		if (val != NULL && val[0] == '-')
 		{
 			val = val + 1;
-			flag_cd = -1;
+			flag = -1;
 		}
 		if (val == NULL)
 			err(5, ln);
@@ -158,7 +158,7 @@ void call_fun(op_func func, char *op, char *val, int ln, int format)
 				err(5, ln);
 			x++;
 		}
-		node = create_node(atoi(val) * flag_cd);
+		node = create_node(atoi(val) * flag);
 		if (format == 0)
 			func(&node, ln);
 		if (format == 1)

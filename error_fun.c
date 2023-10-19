@@ -39,7 +39,7 @@ void err(int error_code, ...)
 			fprintf(stderr, "L%d: unknown instruction %s\n", num1, op);
 			break;
 		case (4):
-			fprintf(stderr, "Error: malloc failed\n")
+			fprintf(stderr, "Error: malloc failed\n");
 				break;
 		case (5):
 			fprintf(stderr, "L%d: usage: push integer\n", va_arg(code, int));
@@ -47,6 +47,7 @@ void err(int error_code, ...)
 		default:
 			break;
 	}
+	free_nodes();
 	exit(EXIT_FAILURE);
 }
 
@@ -89,6 +90,7 @@ void more_err(int error_code, ...)
 		default:
 			break;
 	}
+	free_nodes();
 	exit(EXIT_FAILURE);
 }
 
@@ -117,5 +119,6 @@ void string_err(int error_code, ...)
 		default:
 			break;
 	}
+	free_nodes();
 	exit(EXIT_FAILURE);
 }

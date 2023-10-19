@@ -1,13 +1,11 @@
 #ifndef MONTY_H
 #define MONTY_H
 
-
+#define _GNU_SOURCE
 #include <stdio.h>
-#include <stdlib.h>
-#include <sys/types.h>
 #include <unistd.h>
-#include <fcntl.h>
 #include <string.h>
+#include <stdlib.h>
 #include <ctype.h>
 #include <stdarg.h>
 
@@ -44,7 +42,6 @@ typedef struct instruction_s
 } instruction_t;
 
 extern stack_t *head;
-
 typedef void (*op_func)(stack_t **, unsigned int);
 
 /*operations to file*/
@@ -85,3 +82,4 @@ void err(int error_code, ...);
 void more_err(int error_code, ...);
 void string_err(int error_code, ...);
 void rotr(stack_t **, unsigned int);
+#endif
