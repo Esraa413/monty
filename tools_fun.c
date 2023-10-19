@@ -1,4 +1,3 @@
-
 #include "monty.h"
 
 /**
@@ -56,7 +55,7 @@ void read_file(FILE *fd)
 int parse_line(char *buffer, int line_number, int format)
 {
 	char *opcode;
-	char*value;
+	char *value;
 	const char *delim = "\n ";
 
 	if (buffer == NULL)
